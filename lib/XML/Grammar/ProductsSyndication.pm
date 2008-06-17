@@ -11,13 +11,16 @@ use XML::Amazon;
 use LWP::UserAgent;
 use Imager;
 
-use Moose;
+use base 'Class::Accessor';
 
-has '_filename' => (isa => 'Str', is => 'rw');
-has '_data_dir' => (isa => 'Str', is => 'rw');
-has '_xml_parser' => (isa => "XML::LibXML", is => 'rw');
-has '_stylesheet' => (isa => "XML::LibXSLT::StylesheetWrapper", is => 'rw');
-has '_source_dom' => (isa => "XML::LibXML::Document", is => 'rw');
+__PACKAGE__->mk_accessors(qw(
+    _data_dir
+    _filename
+    _img_fn
+    _source_dom
+    _stylesheet
+    _xml_parser
+));
 
 =head1 NAME
 
@@ -25,11 +28,11 @@ XML::Grammar::ProductsSyndication - an XML Grammar for ProductsSyndication.
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
@@ -277,6 +280,29 @@ sub _transform_image
     }
 }
 
+sub _get_not_available_cover_image_data
+{
+    my $self = shift;
+    open my $in, "<", File::Spec->catfile($self->_data_dir(), "na-cover.jpg");
+    my $content = "";
+    local $/;
+    $content = <$in>;
+    close($in);
+    return $content;
+}
+
+sub _write_image
+{
+    my ($self, $contents) = @_;
+
+    my $filename = $self->_img_fn();
+
+    open my $out, ">", $filename
+        or die "Could not open file '$filename'";
+    print {$out} $contents;
+    close ($out);
+}
+
 sub update_cover_images
 {
     my ($self, $args) = @_;
@@ -305,57 +331,68 @@ sub update_cover_images
 
     my $ua = LWP::UserAgent->new();
 
+    PROD_LOOP:
     foreach my $prod (@products)
     {
         my ($asin_node) = $prod->findnodes('isbn');
+
+        my $disable = $asin_node->getAttribute("disable");
+        if (defined($disable) && ($disable eq "1"))
+        {
+            next PROD_LOOP;
+        }
+
         my $asin = $asin_node->textContent();
 
-        my $item = $amazon->asin($asin);
-
-        my $image_url = $item->image($size);
-
-        my $filename = 
+        $self->_img_fn(
             $name_cb->(
                 {
                     'xml_node' => $prod,
                     'id' => $prod->getAttribute("id"),
                     'isbn' => $asin,
                 }
-            );
+            )
+        );
         
-        if ($overwrite || (! -e $filename))
+        if ($overwrite || (! -e $self->_img_fn()))
         {
-            my $response = $ua->get($image_url);
-            if ($response->is_success)
+            my $item = $amazon->asin($asin);
+
+            my $image_url = $item->image($size);
+            if (!defined($image_url))
             {
-                open my $out, ">", $filename
-                    or die "Could not open file '$filename'";
-                print {$out}
+                $self->_write_image(
                     $self->_transform_image(
                         {
                             %$args,
-                            'content' => $response->content(),
+                            'content' => 
+                                $self->_get_not_available_cover_image_data(),
                         }
-                    );
-                close ($out);
+                    )
+                );
             }
             else
             {
-                die $response->status_line();
+                my $response = $ua->get($image_url);
+                if ($response->is_success)
+                {
+                    $self->_write_image(
+                        $self->_transform_image(
+                            {
+                                %$args,
+                                'content' => $response->content(),
+                            },
+                        ),
+                    );
+                }
+                else
+                {
+                    die $response->status_line();
+                }
             }
         }
     }
 }
-
-=begin unused
-
-=head2 $processor->meta();
-
-This is to settle the Pod::Coverage. meta() is probably inserted by Moose.
-
-=end unused
-
-=cut
 
 =head1 AUTHOR
 

@@ -1,6 +1,6 @@
 ---
 name: XML-Grammar-ProductsSyndication
-version: 0.02
+version: 0.03
 author:
   - 'Shlomi Fish <shlomif@cpan.org>'
 abstract: an XML Grammar for ProductsSyndication.
@@ -8,9 +8,9 @@ license: bsd
 resources:
   license: http://www.opensource.org/licenses/bsd-license.php
 build_requires:
+  Class::Accessor: 0
   Imager: 0
   LWP::UserAgent: 0
-  Moose: 0
   Test::More: 0
   Test::XML: 0
   XML::Amazon: 0
@@ -19,8 +19,8 @@ build_requires:
 provides:
   XML::Grammar::ProductsSyndication:
     file: lib/XML/Grammar/ProductsSyndication.pm
-    version: 0.02
-generated_by: Module::Build version 0.2805
+    version: 0.03
+generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2

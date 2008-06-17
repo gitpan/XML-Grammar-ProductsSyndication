@@ -29,6 +29,10 @@
     </xsl:element>
     <xsl:apply-templates mode="copy-no-ns" 
         select="desc/*" />
+    <xsl:if test="desc/@appendtoc">
+        <xsl:apply-templates mode="gen-toc" select="." />
+    </xsl:if>
+    
     <xsl:apply-templates select="prod|cat|set" />
     </div>
 </xsl:template>
@@ -107,7 +111,8 @@
 </xsl:template>
 
 <xsl:template name="prod_common">
-        <p class="prod_img">
+    <p class="prod_img">
+        <xsl:if test="not (isbn/@disable = 1)">
             <xsl:element name="a">
                 <xsl:attribute name="href">
                     <xsl:text>http://www.amazon.com/exec/obidos/ASIN/</xsl:text>
@@ -125,8 +130,11 @@
                     </xsl:attribute>
                 </xsl:element>
             </xsl:element>
-        </p>
-        <p class="prod_title">
+        </xsl:if>
+    </p>
+    <p class="prod_title">
+        <xsl:choose>
+            <xsl:when test="not (isbn/@disable = 1)">
             <xsl:element name="a">
                 <xsl:attribute name="href">
                     <xsl:text>http://www.amazon.com/exec/obidos/ASIN/</xsl:text>
@@ -135,10 +143,52 @@
                 </xsl:attribute>
                 <xsl:value-of select="title" />
             </xsl:element>
-            <xsl:if test="creator">
-                <br />
-                <xsl:value-of select="creator" />
-            </xsl:if>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:value-of select="title" />
+        </xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="creator">
+            <br />
+            <xsl:value-of select="creator" />
+        </xsl:if>
+        <xsl:apply-templates select="rellink" />
         </p>
 </xsl:template>
+
+<xsl:template match="rellink">
+    <br />
+    <a>
+        <xsl:attribute name="href">
+            <xsl:value-of select="@href" />
+        </xsl:attribute>
+        <xsl:value-of select="@text" />
+    </a>
+</xsl:template>
+
+<xsl:template mode="gen-toc" match="cat">
+    <ul>
+        <xsl:apply-templates mode="gen-toc-sub" select="cat|prod|set" />
+    </ul>
+</xsl:template>
+
+<xsl:template mode="gen-toc-sub" match="cat|prod|set">
+    <li>
+        <a>
+            <xsl:attribute name="href">
+                <xsl:value-of select="concat('#', @id)" />
+            </xsl:attribute>
+            <xsl:value-of select="title" />
+        </a>
+        <xsl:if test="local-name(.) != 'set'">
+            <xsl:if test="cat|prod|set">
+                <br />
+                <ul>
+                    <xsl:apply-templates mode="gen-toc-sub" select="cat|prod|set" />
+                </ul>
+            </xsl:if>
+        </xsl:if>
+    </li>
+</xsl:template>
+
 </xsl:stylesheet>

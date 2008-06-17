@@ -18,7 +18,7 @@ my @extradata_files;
 sub filter_files
 {
     my $filename = $File::Find::name;
-    if ((-f $filename) && ($filename =~ /\.(?:mod|xslt|dtd|ent|cat)$/))
+    if ((-f $filename) && ($filename =~ /\.(?:mod|xslt|dtd|ent|cat|jpg|xcf\.bz2)$/))
     {
         push @extradata_files, $filename;
     }
@@ -36,7 +36,7 @@ my $builder = Test::Run::Builder->new(
         'Test::XML' => 0,
         'XML::LibXML' => 0,
         'XML::LibXSLT' => 0,
-        'Moose' => 0,
+        'Class::Accessor' => 0,
         'XML::Amazon' => 0,
         'LWP::UserAgent' => 0,
         'Imager' => 0,
