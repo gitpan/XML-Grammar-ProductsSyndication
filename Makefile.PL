@@ -28,5 +28,5 @@
     use lib 'inc';
     Module::Build::Compat->run_build_pl(args => \@ARGV);
     exit(0) unless(-e 'Build'); # cpantesters convention
-    require Test::Run::Builder;
-    Module::Build::Compat->write_makefile(build_class => 'Test::Run::Builder');
+    require XML::Grammar::Builder;
+    Module::Build::Compat->write_makefile(build_class => 'XML::Grammar::Builder');
