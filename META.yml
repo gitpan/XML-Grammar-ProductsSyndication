@@ -1,6 +1,6 @@
 ---
 name: XML-Grammar-ProductsSyndication
-version: 0.0302
+version: 0.0303
 author:
   - 'Shlomi Fish <shlomif@cpan.org>'
 abstract: an XML Grammar for ProductsSyndication.
@@ -19,7 +19,7 @@ build_requires:
 provides:
   XML::Grammar::ProductsSyndication:
     file: lib/XML/Grammar/ProductsSyndication.pm
-    version: 0.0302
+    version: 0.0303
 generated_by: Module::Build version 0.32
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
