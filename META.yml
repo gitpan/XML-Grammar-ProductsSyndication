@@ -12,8 +12,9 @@ build_requires:
   XML::LibXML: 0
   XML::LibXSLT: 0
 configure_requires:
-  Module::Build: 0.36
-generated_by: 'Module::Build version 0.3607'
+  Module::Build: 0.38
+dynamic_config: 1
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.112621'
 license: mit
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -22,7 +23,7 @@ name: XML-Grammar-ProductsSyndication
 provides:
   XML::Grammar::ProductsSyndication:
     file: lib/XML/Grammar/ProductsSyndication.pm
-    version: 0.0400
+    version: 0.0401
 resources:
   license: http://www.opensource.org/licenses/mit-license.php
-version: 0.0400
+version: 0.0401
