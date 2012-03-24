@@ -3,18 +3,12 @@ abstract: 'an XML Grammar for ProductsSyndication.'
 author:
   - 'Shlomi Fish <shlomif@cpan.org>'
 build_requires:
-  Class::Accessor: 0
-  Imager: 0
-  LWP::UserAgent: 0
   Test::More: 0
   Test::XML: 0
-  XML::Amazon: 0
-  XML::LibXML: 0
-  XML::LibXSLT: 0
 configure_requires:
   Module::Build: 0.38
 dynamic_config: 1
-generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.112621'
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.120630'
 license: mit
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -23,7 +17,17 @@ name: XML-Grammar-ProductsSyndication
 provides:
   XML::Grammar::ProductsSyndication:
     file: lib/XML/Grammar/ProductsSyndication.pm
-    version: 0.0401
+    version: 0.0402
+requires:
+  Class::Accessor: 0
+  File::Spec: 0
+  Imager: 0
+  LWP::UserAgent: 0
+  XML::Amazon: 0
+  XML::LibXML: 0
+  XML::LibXSLT: 0
+  strict: 0
+  warnings: 0
 resources:
   license: http://www.opensource.org/licenses/mit-license.php
-version: 0.0401
+version: 0.0402

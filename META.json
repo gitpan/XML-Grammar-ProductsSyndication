@@ -4,7 +4,7 @@
       "Shlomi Fish <shlomif@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112621",
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.120630",
    "license" : [
       "mit"
    ],
@@ -16,26 +16,33 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Class::Accessor" : 0,
-            "Imager" : 0,
-            "LWP::UserAgent" : 0,
-            "Test::More" : 0,
-            "Test::XML" : 0,
-            "XML::Amazon" : 0,
-            "XML::LibXML" : 0,
-            "XML::LibXSLT" : 0
+            "Test::More" : "0",
+            "Test::XML" : "0"
          }
       },
       "configure" : {
          "requires" : {
             "Module::Build" : "0.38"
          }
+      },
+      "runtime" : {
+         "requires" : {
+            "Class::Accessor" : "0",
+            "File::Spec" : "0",
+            "Imager" : "0",
+            "LWP::UserAgent" : "0",
+            "XML::Amazon" : "0",
+            "XML::LibXML" : "0",
+            "XML::LibXSLT" : "0",
+            "strict" : "0",
+            "warnings" : "0"
+         }
       }
    },
    "provides" : {
       "XML::Grammar::ProductsSyndication" : {
          "file" : "lib/XML/Grammar/ProductsSyndication.pm",
-         "version" : "0.0401"
+         "version" : "0.0402"
       }
    },
    "release_status" : "stable",
@@ -44,5 +51,5 @@
          "http://www.opensource.org/licenses/mit-license.php"
       ]
    },
-   "version" : "0.0401"
+   "version" : "0.0402"
 }
